@@ -1,13 +1,15 @@
-var server = require('../lib/server');
+var Server = require('../lib/server');
 
 describe('Server', function(){
 
+  var server = new Server();
+
   before(function(){
-    server.listen();
+    server.listen(8825);
   })
 
   after(function(done){
-    server.server.end(done);
+    server.end(done);
   })
 
 })
