@@ -1,6 +1,7 @@
 var slottd = require('../lib/slottd');
 var assert = require('assert');
 var nock = require('nock');
+var fs = require('fs');
 var _ = require('underscore');
 
 describe('slottd', function(){
@@ -8,16 +9,16 @@ describe('slottd', function(){
   describe('.getSlots', function(){
 
     var event = {
-      host: 'Mark Tebbe',
-      date: '1/11',
-      url: 'http://slottd.com/events/1t1hissiyi/slots'
+      host: 'Sonal Mane',
+      date: '2/7',
+      url: 'http://slottd.com/events/eoi5le9pl5/slots'
     };
 
     before(function(){
       nock('http://slottd.com')
         .persist()
-        .get('/events/1t1hissiyi/slots')
-        .reply(200);
+        .get('/events/eoi5le9pl5/slots')
+        .reply(200, fs.readFileSync('test/files/slots.html', 'utf8'));
     });
 
     after(function(){
@@ -32,14 +33,10 @@ describe('slottd', function(){
     });
 
     it('fails if event host name does not match', function(done){
-      slottd.getSlots(_.extend(event, {host:'Tom Brow'}), function(err, slots){
-        assert(err);
-        done();
+      var badHostEvent = _.extend(_.clone(event), {
+        host: 'Tom Brow'
       });
-    });
-
-    it('fails if event date does not match', function(done){
-      slottd.getSlots(_.extend(event, {date:'1/12'}), function(err, slots){
+      slottd.getSlots(badHostEvent, function(err, slots){
         assert(err);
         done();
       });
