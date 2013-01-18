@@ -35,18 +35,18 @@ describe('parser', function(){
 
   });
 
-  describe('.parse', function(){
+  describe('.parseEmailBody', function(){
 
     it('should return no events for an empty string', function(){
-      assert.deepEqual(parser.parse(""), []);
+      assert.deepEqual(parser.parseEmailBody(""), []);
     })
 
     it('should not parse an event not associated with a host', function(){
-      assert.deepEqual(parser.parse(readTestFile('event_no_host.eml')), []);
+      assert.deepEqual(parser.parseEmailBody(readTestFile('event_no_host.txt')), []);
     });
 
     it('should parse a single event for a single host', function(){
-      assert.deepEqual(parser.parse(readTestFile('single_event.eml')), [{
+      assert.deepEqual(parser.parseEmailBody(readTestFile('single_event.txt')), [{
         host: 'Mark Tebbe',
         date: '1/11',
         url: 'http://slottd.com/events/1t1hissiyi/slots'
