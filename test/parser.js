@@ -19,6 +19,13 @@ describe('parser', function(){
       );
     });
 
+    it('should still parse if the trailing comma is missing', function(){
+      assert.deepEqual(
+        parser.parseHostLine("Connie Capone [http://r20.rs6.net/tn.jsp?e=0019h-okzdG8p_dLH8S7ZvpCqm3T6CgENA7Za_5SK7SEaZCN-796cB-Tz7tlAGEGrZgbfK2_4B_FvoPDnv74Pi_PAX4FwryqrvvV3nI4qoZOsXqzOhbSnj6RYUXVpovp3tuWyjrgtW2kwU=]"),
+        "Connie Capone"
+      );
+    });
+
   });
 
   describe('.parseEventLine', function(){
@@ -29,6 +36,16 @@ describe('parser', function(){
         {
           date: '1/11',
           url: 'http://slottd.com/events/1t1hissiyi/slots'
+        }
+      );
+    });
+
+    it('should still parse if date is followed by a comma', function(){
+      assert.deepEqual(
+        parser.parseEventLine("1/9, 1-2:30 http://slottd.com/events/ibq7biuzqp/slots [http://r20.rs6.net/tn.jsp?e=0019h-okzdG8p9ON493min5wy1d0QN1O69tqGcamqH80HvatCKxICWPiXD3bvfontsuC9vg5JKN3JTjRYCrAHpuXYlq6U5lddQmosgiXuP17eQ22Ve18hnqQ5po0Zd42-4AqmT8Y0RxtO4=]"),
+        {
+          date: '1/9',
+          url: 'http://slottd.com/events/ibq7biuzqp/slots'
         }
       );
     });
@@ -55,6 +72,30 @@ describe('parser', function(){
 
   })
 
+  describe('.parseEmail', function(){
+
+    it('should parse all events from a real email', function(done){
+      parseEmail(readTestFile('real_email.eml'), function(events){
+        assert.equal(34, events.length);
+        assert.deepEqual(events[0], {
+          host: 'Mark Tebbe',
+          date: '1/11',
+          url: 'http://slottd.com/events/1t1hissiyi/slots'
+        });
+        assert.deepEqual(events[2], {
+          host: 'Bernhard Kappe',
+          date: '1/17',
+          url: 'http://slottd.com/events/p72hlsg5nf/slots'
+        });
+        assert.deepEqual(events[33], {
+          host: 'Nik Rokop',
+          date: '1/18',
+          url: 'http://slottd.com/events/7mn6ttpwbq/slots'
+        });
+        done();
+      });
+    });
+
+  });
+
 })
-
-
