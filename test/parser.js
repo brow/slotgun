@@ -41,6 +41,10 @@ describe('parser', function(){
       assert.deepEqual(parser.parse(""), []);
     })
 
+    it('should not parse an event not associated with a host', function(){
+      assert.deepEqual(parser.parse(readTestFile('event_no_host.eml')), []);
+    });
+
     it('should parse a single event for a single host', function(){
       assert.deepEqual(parser.parse(readTestFile('single_event.eml')), [{
         host: 'Mark Tebbe',
