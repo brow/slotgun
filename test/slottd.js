@@ -6,7 +6,7 @@ var _ = require('underscore');
 
 describe('slottd', function(){
   
-  describe('.getSlots', function(){
+  describe('.getReservationUrls', function(){
 
     var event = {
       host: 'Sonal Mane',
@@ -25,9 +25,13 @@ describe('slottd', function(){
       nock.restore();
     });
 
-    it('succeeds if event is accurate', function(done){
-      slottd.getSlots(event, function(err, slots){
-        assert(!err);
+    it('returns slots if event is accurate', function(done){
+      slottd.getReservationUrls(event, function(err, reservationUrls){
+        assert.deepEqual(reservationUrls, [
+           '/events/eoi5le9pl5/slots/5177/reservation',
+           '/events/eoi5le9pl5/slots/5178/reservation',
+           '/events/eoi5le9pl5/slots/5179/reservation',
+        ]);
         done();
       });
     });
@@ -36,7 +40,7 @@ describe('slottd', function(){
       var badHostEvent = _.extend(_.clone(event), {
         host: 'Tom Brow'
       });
-      slottd.getSlots(badHostEvent, function(err, slots){
+      slottd.getReservationUrls(badHostEvent, function(err){
         assert(err);
         done();
       });
