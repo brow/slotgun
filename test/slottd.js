@@ -25,13 +25,14 @@ describe('slottd', function(){
       nock.restore();
     });
 
-    it('returns slots if event is accurate', function(done){
-      slottd.getReservationUrls(event, function(err, reservationUrls){
+    it('returns reservation URLs and a user token', function(done){
+      slottd.getReservationUrls(event, function(err, reservationUrls, userToken){
         assert.deepEqual(reservationUrls, [
            '/events/eoi5le9pl5/slots/5177/reservation',
            '/events/eoi5le9pl5/slots/5178/reservation',
            '/events/eoi5le9pl5/slots/5179/reservation',
         ]);
+        assert.equal(userToken, '8ggwcqtxti');
         done();
       });
     });
