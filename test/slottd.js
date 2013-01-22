@@ -6,7 +6,7 @@ var _ = require('underscore');
 
 describe('slottd', function(){
   
-  describe('.getReservationUrls', function(){
+  describe('.getReservationPaths', function(){
 
     var event = {
       host: 'Sonal Mane',
@@ -22,12 +22,13 @@ describe('slottd', function(){
     });
 
     after(function(){
-      nock.restore();
+      nock.cleanAll();
     });
 
-    it('returns reservation URLs and a user token', function(done){
-      slottd.getReservationUrls(event, function(err, reservationUrls, userToken){
-        assert.deepEqual(reservationUrls, [
+    it('returns reservation paths and a user token', function(done){
+      slottd.getReservationPaths(event, function(err, reservationPaths, userToken){
+        assert.ifError(err);
+        assert.deepEqual(reservationPaths, [
            '/events/eoi5le9pl5/slots/5177/reservation',
            '/events/eoi5le9pl5/slots/5178/reservation',
            '/events/eoi5le9pl5/slots/5179/reservation',
@@ -41,11 +42,50 @@ describe('slottd', function(){
       var badHostEvent = _.extend(_.clone(event), {
         host: 'Tom Brow'
       });
-      slottd.getReservationUrls(badHostEvent, function(err){
+      slottd.getReservationPaths(badHostEvent, function(err){
         assert(err);
         done();
       });
     });
+
+  });
+
+  describe('.createReservation', function(){
+
+    var reservationPath = '/events/eoi5le9pl5/slots/5179/reservation',
+        userToken = '8ggwcqtxti';
+
+    it('returns a slot id', function(done){
+      nock('http://slottd.com')
+        .post(reservationPath, 'user_token=' + userToken)
+        .reply(201, '{"slot_id":"5179"}');
+
+      slottd.createReservation(reservationPath, userToken, function(err, slotId){
+        assert.ifError(err);
+        assert.equal(5179, slotId);
+        done();
+      });
+    });
+
+    it('fails if slot is taken', function(done){
+      nock('http://slottd.com')
+        .post(reservationPath, 'user_token=' + userToken)
+        .reply(400,'{"errors":["Slot::AlreadyReservedException"],"slot_id":"5179","type":"already_reserved"}');
+      
+      slottd.createReservation(reservationPath, userToken, function(err, slotId){
+        assert(err);
+        assert(!slotId);
+        done();
+      });
+    });
+
+  });
+
+  describe('.confirmReservation', function(){
+
+    it('returns nothing');
+
+    it('fails if reservation cannot be confirmed');
 
   });
 
