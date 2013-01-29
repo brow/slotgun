@@ -6,7 +6,7 @@ var fs = require('fs');
 var _ = require('underscore');
 
 describe('slottd', function(){
-  
+
   describe('.getSlots', function(){
 
     var event = {
@@ -109,7 +109,7 @@ describe('slottd', function(){
       });
     });
 
-  it('fails if reservation cannot be confirmed', function(done){
+    it('fails if reservation cannot be confirmed', function(done){
       nock('http://slottd.com')
         .post(confirmationUrl, confirmationBody)
         .reply(200);
