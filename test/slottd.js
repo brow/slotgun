@@ -30,11 +30,14 @@ describe('slottd', function(){
       slottd.getSlots(event, function(err, slots, userToken){
         assert.ifError(err);
         assert.deepEqual(slots, [
-          { reservationPath: '/events/eoi5le9pl5/slots/5177/reservation',
+          { time: '12:00',
+            reservationPath: '/events/eoi5le9pl5/slots/5177/reservation',
             confirmationPath: '/events/eoi5le9pl5/slots/5177/reservation_confirmation'},
-          { reservationPath: '/events/eoi5le9pl5/slots/5178/reservation',
+          { time: '1:00',
+            reservationPath: '/events/eoi5le9pl5/slots/5178/reservation',
             confirmationPath: '/events/eoi5le9pl5/slots/5178/reservation_confirmation'},
-          { reservationPath: '/events/eoi5le9pl5/slots/5179/reservation',
+          { time: '2:00',
+            reservationPath: '/events/eoi5le9pl5/slots/5179/reservation',
             confirmationPath: '/events/eoi5le9pl5/slots/5179/reservation_confirmation'},
         ]);
         assert.equal(userToken, '8ggwcqtxti');
