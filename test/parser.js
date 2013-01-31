@@ -75,7 +75,8 @@ describe('parser', function(){
   describe('.parseEmail', function(){
 
     it('parses all events from a real email', function(done){
-      parseEmail(readTestFile('real_email.eml'), function(events){
+      parseEmail(readTestFile('real_email.eml'), function(err, events){
+        assert.ifError(err);
         assert.equal(34, events.length);
         assert.deepEqual(events[0], {
           host: 'Mark Tebbe',
