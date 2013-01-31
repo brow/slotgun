@@ -53,7 +53,7 @@ describe('Server', function(){
       email,
       function(err){
         assert.ifError(err);
-        assert(logger.log.calledOnce);
+        assert(logger.log.calledWithMatch('officehours@example.com'));
 
         mockGet.done();
         mockPost.done();
