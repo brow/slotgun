@@ -10,15 +10,15 @@ describe('slottd', function(){
   describe('.getSlots', function(){
 
     var event = {
-      host: 'Sonal Mane',
-      date: '2/7',
-      url: 'http://slottd.com/events/eoi5le9pl5/slots'
+      host: 'Tom Knight',
+      date: '1/17',
+      url: 'http://slottd.com/events/zcvje2pmyv/slots'
     };
 
     before(function(){
       nock('http://slottd.com')
         .persist()
-        .get('/events/eoi5le9pl5/slots')
+        .get('/events/zcvje2pmyv/slots')
         .reply(200, fs.readFileSync('test/files/slots.html', 'utf8'));
     });
 
@@ -30,17 +30,17 @@ describe('slottd', function(){
       slottd.getSlots(event, function(err, slots, userToken){
         assert.ifError(err);
         assert.deepEqual(slots, [
-          { time: '12:00',
-            reservationPath: '/events/eoi5le9pl5/slots/5177/reservation',
-            confirmationPath: '/events/eoi5le9pl5/slots/5177/reservation_confirmation'},
-          { time: '1:00',
-            reservationPath: '/events/eoi5le9pl5/slots/5178/reservation',
-            confirmationPath: '/events/eoi5le9pl5/slots/5178/reservation_confirmation'},
           { time: '2:00',
-            reservationPath: '/events/eoi5le9pl5/slots/5179/reservation',
-            confirmationPath: '/events/eoi5le9pl5/slots/5179/reservation_confirmation'},
+            reservationPath: '/events/zcvje2pmyv/slots/4821/reservation',
+            confirmationPath: '/events/zcvje2pmyv/slots/4821/reservation_confirmation'},
+          { time: '2:55',
+            reservationPath: '/events/zcvje2pmyv/slots/4822/reservation',
+            confirmationPath: '/events/zcvje2pmyv/slots/4822/reservation_confirmation'},
+          { time: '3:50',
+            reservationPath: '/events/zcvje2pmyv/slots/4823/reservation',
+            confirmationPath: '/events/zcvje2pmyv/slots/4823/reservation_confirmation'},
         ]);
-        assert.equal(userToken, '8ggwcqtxti');
+        assert.equal(userToken, 'nzvmpfpq87');
         done();
       });
     });
