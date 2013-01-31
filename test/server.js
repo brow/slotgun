@@ -18,7 +18,7 @@ describe('Server', function(){
           date: '1/17',
           time: '2:55',
           guest: 'Tom Brow',
-          email: 'tom@fiftyfourth.st',
+          email: 'tom@example.com',
           topic: 'TBD' }],
         email = fs.readFileSync('test/files/real_email.eml', 'utf8'),
         client = new Client('localhost', port),

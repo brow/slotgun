@@ -97,7 +97,7 @@ before(function(){
 
     var slotId = 5179,
         name = 'Tom Brow',
-        email = 'tom@fiftyfourth.st',
+        email = 'tom@example.com',
         topic = 'TBD',
         csrfToken = 'V9xosljRgRw5cYIe2NAw7cdG4/yzQjyXtTQ8ZnwiUD8=';
         confirmationUrl = '/events/eoi5le9pl5/slots/5179/reservation_confirmation',
