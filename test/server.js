@@ -24,20 +24,23 @@ describe('Server', function(){
         client = new Client('localhost', port),
         server = new Server(goals);
 
-    var mock_http = 
-      nock('http://slottd.com')
-        .get('/events/zcvje2pmyv/slots')
-        .reply(200, fs.readFileSync('test/files/slots.html', 'utf8'))
-        .post('/events/zcvje2pmyv/slots/4822/reservation', 
-              'user_token=nzvmpfpq87')
-        .reply(201, {slot_id:4822})
-        .post('/events/zcvje2pmyv/slots/4822/reservation_confirmation', 
-              querystring.stringify({
-                'confirmation[name]': goals[0].name,
-                'confirmation[email]': goals[0].email,
-                'confirmation[discussion_topic]': goals[0].topic
-              }))
-        .reply(200);
+    var csrfToken = 'V9xosljRgRw5cYIe2NAw7cdG4/yzQjyXtTQ8ZnwiUD8=';
+    var mock_get = nock('http://slottd.com')
+      .get('/events/zcvje2pmyv/slots')
+      .reply(200, fs.readFileSync('test/files/slots.html', 'utf8'));
+    var mock_post = nock('http://slottd.com')
+      .matchHeader('x-csrf-token', csrfToken)
+      .matchHeader('x-requested-with', 'XMLHttpRequest')
+      .post('/events/zcvje2pmyv/slots/4822/reservation', 
+            'user_token=nzvmpfpq87')
+      .reply(201, {slot_id:4822})
+      .post('/events/zcvje2pmyv/slots/4822/reservation_confirmation', 
+            querystring.stringify({
+              'confirmation[name]': goals[0].name,
+              'confirmation[email]': goals[0].email,
+              'confirmation[discussion_topic]': goals[0].topic
+            }))
+      .reply(201);
 
     server.listen(port);
     client.send(
@@ -47,7 +50,7 @@ describe('Server', function(){
       function(err){
         assert.ifError(err);
 
-        mock_http.done();
+        mock_post.done();
         server.end(done);
       }
     );
