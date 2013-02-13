@@ -33,10 +33,10 @@ describe('Server', function(){
         mockPost = nock('http://slottd.com')
           .matchHeader('x-csrf-token', csrfToken)
           .matchHeader('x-requested-with', 'XMLHttpRequest')
-          .post('/events/zcvje2pmyv/slots/4822/reservation', 
+          .post('/events/zcvje2pmyv/slots/4822/reservation',
                 'user_token=nzvmpfpq87')
           .reply(201, {slot_id:4822})
-          .post('/events/zcvje2pmyv/slots/4822/reservation_confirmation', 
+          .post('/events/zcvje2pmyv/slots/4822/reservation_confirmation',
                 querystring.stringify({
                   'confirmation[name]': goals[0].name,
                   'confirmation[email]': goals[0].email,
@@ -53,7 +53,9 @@ describe('Server', function(){
       email,
       function(err){
         assert.ifError(err);
-        assert(logger.log.calledWithMatch('officehours@example.com'));
+        assert(logger.log.calledWithMatch('officehours@example.com'), 'logs sender');
+        assert(logger.log.calledWithMatch(goals[0].host), 'logs reserved host');
+        assert(logger.log.calledWithMatch(goals[0].guest), 'logs reserving guest');
 
         mockGet.done();
         mockPost.done();
