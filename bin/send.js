@@ -1,4 +1,4 @@
-var Client = require('./lib/client');
+var Client = require('../lib/client');
 var fs = require('fs');
 
 var port = 25,

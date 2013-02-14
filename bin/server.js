@@ -1,4 +1,4 @@
-var Server = require('./lib/server');
+var Server = require('../lib/server');
 
 var server = new Server([
   { host: 'Alex Tavakoli',
