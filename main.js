@@ -1,11 +1,11 @@
 var Server = require('./lib/server');
 
 var server = new Server([
-  { host: 'Tom Knight',
-    date: '1/17',
-    time: '2:55',
+  { host: 'Alex Tavakoli',
+    date: '2/7',
+    time: '1:15',
     guest: 'Tom Brow',
-    email: 'tom@example.com',
+    email: 'tom@fiftyfourth.st',
     topic: 'TBD' },
 ]);
 
